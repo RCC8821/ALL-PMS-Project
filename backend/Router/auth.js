@@ -14,9 +14,9 @@ const ALLOWED_USER_TYPES = [
   'RNTU',
   'SCOPE',
   'NEWSCOPE',
-  'Gupta_Ji_C',
-  'Gupta_Ji_B',
-  'Gupta_Ji_D',
+  'GUPTA_JI_C',
+  'GUPTA_JI_B',
+  'GUPTA_JI_D',
   'Scope_Adjusting'
 ];
 
@@ -56,11 +56,13 @@ router.post('/login', async (req, res) => {
 
     // अगर sheet में "Admin" लिखा है → "ADMIN" बन जाएगा
     // "Govind Ram Nagar" → "GOVINDRAMNAGAR" (spaces हट गए)
-
+    
     // Allowed check - normalized version से
     if (!ALLOWED_USER_TYPES.includes(userType)) {
       // अगर spaces वाली value match नहीं कर रही तो original check भी कर सकते हो (fallback)
       const originalUserType = (userRow[2] || '').trim();
+      console.log(originalUserType)
+
       if (!ALLOWED_USER_TYPES.some(allowed => 
         allowed.replace(/\s+/g, '') === originalUserType.toUpperCase().replace(/\s+/g, '')
       )) {

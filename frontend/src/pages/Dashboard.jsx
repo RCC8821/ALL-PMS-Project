@@ -27,9 +27,9 @@ const ROLE_PERMISSIONS = {
   RNTU: ['overview', 'curing'],
   SCOPE: ['overview', 'curing'],
   NEWSCOPE: ['overview', 'curing'],
-  Gupta_Ji_C: ['overview', 'curing'],
-  Gupta_Ji_B: ['overview', 'curing'],
-  Gupta_Ji_D: ['overview', 'curing'],
+  GUPTA_JI_C: ['overview', 'curing'],
+  GUPTA_JI_B: ['overview', 'curing'],
+  GUPTA_JI_D: ['overview', 'curing'],
   Scope_Adjusting: ['overview', 'curing'],
   
   
