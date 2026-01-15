@@ -483,7 +483,7 @@
 //       `}</style>
 //     </div>
 //   );
-// };
+// }
 
 // export default Login;
 
