@@ -7,8 +7,8 @@ import {
 } from 'lucide-react';
 
 // Components
-import Curing from '../components/Curing'; // अपना सही path डालना
-
+import Curing from '../components/Curing/Curing'; // अपना सही path डालना
+import Casting from '../components/Casting/Casting';
 // Redux
 import { logout } from '../../src/features/Auth/AuthSlice';
 
@@ -16,21 +16,21 @@ const ROLE_PERMISSIONS = {
   ADMIN: [
     'overview', 
     'curing', 
-    'casting', 
+    'Casting', 
     'waterproofing', 
     'excavation', 
     'foundation'
   ],
-  AHUJA: ['overview', 'curing'],
-  ABBOTT: ['overview', 'curing'],
-  RANA: ['overview', 'curing'],
-  RNTU: ['overview', 'curing'],
-  SCOPE: ['overview', 'curing'],
-  NEWSCOPE: ['overview', 'curing'],
-  GUPTA_JI_C: ['overview', 'curing'],
-  GUPTA_JI_B: ['overview', 'curing'],
-  GUPTA_JI_D: ['overview', 'curing'],
-  Scope_Adjusting: ['overview', 'curing'],
+  AHUJA: ['overview', 'curing','Casting'],
+  ABBOTT: ['overview', 'curing','Casting'],
+  RANA: ['overview', 'curing','Casting'],
+  RNTU: ['overview', 'curing','Casting'],
+  SCOPE: ['overview', 'curing','Casting'],
+  NEWSCOPE: ['overview', 'curing','Casting'],
+  GUPTA_JI_C: ['overview', 'curing','Casting'],
+  GUPTA_JI_B: ['overview', 'curing','Casting'],
+  GUPTA_JI_D: ['overview', 'curing','Casting'],
+  Scope_Adjusting: ['overview', 'curing','Casting'],
   
   
 };
@@ -40,7 +40,7 @@ const DEFAULT_PERMISSIONS = ['overview'];
 const MODULE_CONFIG = [
   { id: 'overview',      label: 'Overview',       icon: LayoutDashboard, color: 'blue'    },
   { id: 'curing',        label: 'Curing',         icon: Droplets,        color: 'cyan'    },
-  { id: 'casting',       label: 'Casting',        icon: Hammer,          color: 'indigo'  },
+  { id: 'Casting',       label: 'Casting',        icon: Hammer,          color: 'indigo'  },
   { id: 'waterproofing', label: 'Waterproofing',  icon: ShieldCheck,     color: 'teal'    },
   { id: 'excavation',    label: 'Excavation',     icon: Pickaxe,         color: 'amber'   },
   { id: 'foundation',    label: 'Foundation',     icon: Landmark,        color: 'violet'  },
@@ -207,8 +207,9 @@ const Dashboard = () => {
                 )}
 
                 {activeTab === 'curing' && <Curing />}
+                {activeTab === 'Casting' && <Casting />}
 
-                {activeTab !== 'overview' && activeTab !== 'curing' && (
+                {activeTab !== 'overview' && activeTab !== 'curing' || activeTab !== 'Casting' && (
                   <div className="flex flex-col items-center justify-center py-20 text-gray-500">
                     <Hammer size={64} className="mb-6 opacity-70" />
                     <h3 className="text-2xl font-semibold text-gray-700 mb-2">

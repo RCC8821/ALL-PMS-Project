@@ -13,6 +13,9 @@ const authRoutes = require('./Router/auth');
 
 const Fullkitting = require('./All_PMS_APIs/Curing/Fullkitting')
 
+///// casting
+const FullkittingCasting = require('./All_PMS_APIs/Casting/fullkittingCasting')
+
 const app = express();
 // 1. CORS (Pehle daalo)
 app.use(cors({
@@ -46,6 +49,9 @@ app.use('/api', authRoutes);
 /////// Curing ///// 
 app.use('/api',Fullkitting)
 
+////// casting ///
+
+app.use('/api',FullkittingCasting)
 
 // 7. Health Check
 app.get('/', (req, res) => {

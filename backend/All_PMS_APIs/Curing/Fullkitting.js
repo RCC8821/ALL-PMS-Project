@@ -1,8 +1,4 @@
 
-
-///////////////////////////////////               ///////////////
-
-
 const express = require('express');
 const { sheets, drive, spreadsheetId } = require('../../config/googleSheet');
 const { Readable } = require('stream');
@@ -206,107 +202,6 @@ router.post('/submit-Fullkitting', async (req, res) => {
 
 
 
-// // === DAY COLUMNS MAPPING ===
-// const dayColumns = {
-//   1:  { status: 'U',  morning: 'V',  afternoon: 'W',  evening: 'X',  doneBy: 'Y'  },
-//   2:  { status: 'AC', morning: 'AD', afternoon: 'AE', evening: 'AF', doneBy: 'AG' },
-//   3:  { status: 'AK', morning: 'AL', afternoon: 'AM', evening: 'AN', doneBy: 'AO' },
-//   4:  { status: 'AT', morning: 'AU', afternoon: 'AV', evening: 'AW', doneBy: 'AX' },
-//   5:  { status: 'BB', morning: 'BC', afternoon: 'BD', evening: 'BE', doneBy: 'BF' },
-//   6:  { status: 'BJ', morning: 'BK', afternoon: 'BL', evening: 'BM', doneBy: 'BN' },
-//   7:  { status: 'BR', morning: 'BS', afternoon: 'BT', evening: 'BU', doneBy: 'BV' },
-//   8:  { status: 'BZ', morning: 'CA', afternoon: 'CB', evening: 'CC', doneBy: 'CD' },
-//   9:  { status: 'CH', morning: 'CI', afternoon: 'CJ', evening: 'CK', doneBy: 'CL' },
-//   10: { status: 'CP', morning: 'CQ', afternoon: 'CR', evening: 'CS', doneBy: 'CT' },
-//   11: { status: 'CX', morning: 'CY', afternoon: 'CZ', evening: 'DA', doneBy: 'DB' },
-//   12: { status: 'DF', morning: 'DG', afternoon: 'DH', evening: 'DI', doneBy: 'DJ' },
-//   13: { status: 'DN', morning: 'DO', afternoon: 'DP', evening: 'DQ', doneBy: 'DR' },
-//   14: { status: 'DV', morning: 'DW', afternoon: 'DX', evening: 'DY', doneBy: 'DZ' },
-//   15: { status: 'ED', morning: 'EE', afternoon: 'EF', evening: 'EG', doneBy: 'EH' }
-// };
-
-// // === GET CURING PROGRESS (New API - only status column check) ===
-// router.get('/curing-progress/:CuringUID', async (req, res) => {
-//   try {
-//     const { CuringUID } = req.params;
-
-//     const response = await sheets.spreadsheets.values.get({
-//       spreadsheetId,
-//       range: 'FMS!A8:EH',  // Only status columns + some buffer
-//     });
-
-//     const rows = response.data.values || [];
-
-//     // Find row (CuringUID is in column B → but since we start from U, we adjust index)
-//     // U is column 21 (1-based) → index 0 in this range
-//     const rowIndex = rows.findIndex(row => {
-//       // We need column B, which is 19 columns before U (U=21, B=2 → 21-2=19)
-//       const curingUidInThisRange = row[-19]; // not possible → better way: fetch more columns
-//       return false; // ← we'll fix this below with wider range
-//     });
-
-//     // Better approach: fetch from B column
-//     const fullResponse = await sheets.spreadsheets.values.get({
-//       spreadsheetId,
-//       range: 'FMS!A8:EH',  // Start from B
-//     });
-
-//     const fullRows = fullResponse.data.values || [];
-
-//     const targetRowIndex = fullRows.findIndex(row => row[0]?.toString().trim() === CuringUID.trim());
-
-//     if (targetRowIndex === -1) {
-//       return res.status(404).json({
-//         success: false,
-//         error: 'CuringUID not found'
-//       });
-//     }
-
-//     const row = fullRows[targetRowIndex];
-
-//     const completedDays = [];
-
-//     for (let day = 1; day <= 15; day++) {
-//       const col = dayColumns[day];
-//       const statusCol = col.status;
-//       const statusIndex = columnToIndex(statusCol) - columnToIndex('B'); // relative to B
-
-//       const statusValue = row[statusIndex]?.toString().trim();
-
-//       if (statusValue !== '' && statusValue !== undefined) {
-//         completedDays.push(day);
-//       }
-//     }
-
-//     res.json({
-//       success: true,
-//       curingUID: CuringUID,
-//       progress: {
-//         completedDays: completedDays.sort((a, b) => a - b),
-//         completedCount: completedDays.length,
-//         pendingCount: 15 - completedDays.length,
-//         isComplete: completedDays.length === 15
-//       }
-//     });
-
-//   } catch (error) {
-//     console.error('Error fetching curing progress:', error);
-//     res.status(500).json({
-//       success: false,
-//       error: 'Failed to fetch curing progress'
-//     });
-//   }
-// });
-
-
-
-
-// पहले से define मानकर चल रहे हैं
-// const { google } = require('googleapis');
-// const sheets = google.sheets({ version: 'v4', auth });
-// const spreadsheetId = 'तुम्हारा-spreadsheet-id';
-
-// DAY COLUMNS (तुम्हारा दिया हुआ - बिल्कुल सही है)
 const dayColumns = {
   1:  { status: 'U',  morning: 'V',  afternoon: 'W',  evening: 'X',  doneBy: 'Y'  },
   2:  { status: 'AC', morning: 'AD', afternoon: 'AE', evening: 'AF', doneBy: 'AG' },

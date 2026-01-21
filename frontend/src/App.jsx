@@ -3,8 +3,8 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import { useSelector } from "react-redux";
 
-import Curing from "./components/Curing";
-
+import Curing from "./components/Curing/Curing";
+import Casting from "./components/Casting/Casting";
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useSelector((state) => state.auth);
@@ -26,6 +26,7 @@ const App = () => {
           >
          
          <Route path="curing" element={<Curing/>} />
+         <Route path='casting' element={<Casting/>}/>
       
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
