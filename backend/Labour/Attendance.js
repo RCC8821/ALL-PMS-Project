@@ -4,7 +4,7 @@ const {
   sheets,
   drive,
   LABOUR_ID,
-} = require("../../backend/config/googleSheet");
+} = require("../config/googleSheet");
 
 const router = express.Router();
 
