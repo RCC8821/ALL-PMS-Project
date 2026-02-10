@@ -77,7 +77,6 @@ async function uploadToGoogleDrive(base64Data, fileName) {
   }
 }
 
-// === GET FULLKITTING DATA ===
 
 router.get('/Get-fullkitting-data', async (req, res) => {
   try {
@@ -86,25 +85,31 @@ router.get('/Get-fullkitting-data', async (req, res) => {
       range: 'FMS!A7:ED',
     });
 
-    let data = response.data.values || [];
+    const rows = response.data.values || [];
 
-    // केवल वो rows रखें जिनमें column L (index 11) में "Done" न हो
-    const filteredData = data
+    const filteredData = rows
       .filter(row => {
-        const status = (row[133] || '').toString().trim();
-        return status !== 'Done' && status !== 'done'; // case-insensitive भी कर सकते हैं
+        if (!row || row.every(cell => !cell || cell.toString().trim() === '')) {
+          return false; // पूरी तरह खाली row
+        }
+
+        const status = (row[11] || '').toString().trim().toLowerCase(); // ← यहाँ सही index डालें (11 या 133?)
+        
+        // अगर status वाला column खाली भी हो तो दिखाना है या नहीं? → आप decide करें
+        // return status !== 'done' && status !== '';  
+        return status !== 'done';
       })
       .map(row => ({
-        Planned: row[9] || '',
-        CuringUID: row[1] || '',
-        UID: row[2] || '',
-        Zone: row[3] || '',
-        Activity: row[4] || '',
-        SubActivity: row[5] || '',
-        ActualStart: row[6] || '',
-        ActualEnd: row[7] || '',
-        SiteName: row[8] || '',
-        status: row[11] || ''   
+        Planned:    row[9]  || '',
+        CuringUID:  row[1]  || '',
+        UID:        row[2]  || '',
+        Zone:       row[3]  || '',
+        Activity:   row[4]  || '',
+        SubActivity:row[5]  || '',
+        ActualStart:row[6]  || '',
+        ActualEnd:  row[7]  || '',
+        SiteName:   row[8]  || '',
+        status:     row[11] || ''
       }));
 
     res.json({ success: true, data: filteredData });

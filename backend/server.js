@@ -10,11 +10,23 @@ const cors = require("cors");
 const authRoutes = require('./Router/auth');
 
 ///// Curing //////////
-
 const Fullkitting = require('./All_PMS_APIs/Curing/Fullkitting')
-
 ///// casting
 const FullkittingCasting = require('./All_PMS_APIs/Casting/fullkittingCasting')
+
+//// waterProffing 
+const waterProffing = require('./All_PMS_APIs/WaterProofing/Fullkitting') 
+
+///// BrickWork 
+
+const BrickWork = require('./All_PMS_APIs/BrickWork/Brickwork')
+////// electrical
+
+const Electrical = require('./All_PMS_APIs/Electrical/FullKitting')
+
+/////  labour
+
+const Labour = require('./Labour/Attendance')
 
 const app = express();
 // 1. CORS (Pehle daalo)
@@ -52,6 +64,22 @@ app.use('/api',Fullkitting)
 ////// casting ///
 
 app.use('/api',FullkittingCasting)
+
+///// WaterProffing
+
+app.use('/api/water',waterProffing)
+
+///// Brick work 
+
+app.use('/api/Bricks',BrickWork)
+
+/////// Electrical
+
+app.use('/api/electrical',Electrical)
+
+/////// labour api 
+
+app.use('/api',Labour)
 
 // 7. Health Check
 app.get('/', (req, res) => {

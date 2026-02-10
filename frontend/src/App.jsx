@@ -5,6 +5,14 @@ import { useSelector } from "react-redux";
 
 import Curing from "./components/Curing/Curing";
 import Casting from "./components/Casting/Casting";
+import Waterproofing from "./components/WaterProofing/waterproofing";  // ← renamed to PascalCase
+import BrickWork from "./components/Brickswork/BrickWork";
+import ElectricalWork from "./components/Electrical/ElectricalWork";
+
+
+///// labour attendance
+
+import Attendance from "./components/LabourForm/Attendance";
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useSelector((state) => state.auth);
@@ -16,6 +24,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
+
         <Route
           path="/dashboard"
           element={
@@ -23,12 +32,17 @@ const App = () => {
               <Dashboard />
             </ProtectedRoute>
           }
-          >
-         
-         <Route path="curing" element={<Curing/>} />
-         <Route path='casting' element={<Casting/>}/>
-      
+        >
+          <Route path="curing" element={<Curing />} />
+          <Route path="casting" element={<Casting />} />
+          <Route path="waterproofing" element={<Waterproofing />} /> 
+          <Route path="waterproofing" element={< BrickWork/>} /> 
+          <Route path="Electrical" element={< ElectricalWork/>} /> 
+          <Route path="Attendance" element={< Attendance/>} /> 
+
+
         </Route>
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>

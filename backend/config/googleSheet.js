@@ -25,7 +25,11 @@ const auth = new google.auth.GoogleAuth({
 const sheets = google.sheets({ version: 'v4', auth });
 const drive = google.drive({ version: "v3", auth, supportsAllDrives: true });
 const spreadsheetId = process.env.SPREADSHEET_ID;
-const castingSheetID = process.env.CASTING_ID
-module.exports = { sheets, drive, spreadsheetId ,castingSheetID}; // Export drive
+const castingSheetID = process.env.CASTING_ID;
+const waterProffingSheetID=process.env.WATER_ID;
+const BrickWorkSheetID=process.env.BRICKWORK_ID;
+const Electrical_ID = process.env.Electrical_SHEET_ID
+const LABOUR_ID= process.env.LABOUR_SHEET_ID
+module.exports = { sheets, drive, spreadsheetId ,castingSheetID,waterProffingSheetID,BrickWorkSheetID,Electrical_ID,LABOUR_ID};
 
 
