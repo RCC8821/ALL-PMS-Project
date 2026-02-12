@@ -31,7 +31,7 @@ const Labour = require('./Labour/Attendance')
 const app = express();
 // 1. CORS (Pehle daalo)
 app.use(cors({
-  origin: process.env.CLIENT_URL || '*', // Ya 'http://localhost:3000'
+  origin: process.env.CLIENT_URL || '*', 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
