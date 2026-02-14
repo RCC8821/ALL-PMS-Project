@@ -292,17 +292,19 @@ const ROLE_PERMISSIONS = {
   ADMIN: [
     'overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'LabourAttendance'
   ],
-  AHUJA:       ['overview', 'curing', 'casting', 'labour'],
-  ABBOTT:      ['overview', 'curing', 'casting'],
-  RANA:        ['overview', 'curing', 'casting'],
-  RNTU:        ['overview', 'curing', 'casting'],
-  SCOPE:       ['overview', 'curing', 'casting'],
-  NEWSCOPE:    ['overview', 'curing', 'casting'],
-  GUPTA_JI_C:  ['overview', 'curing', 'casting'],
-  GUPTA_JI_B:  ['overview', 'curing', 'casting'],
-  GUPTA_JI_D:  ['overview', 'curing', 'casting'],
-  Scope_Adjusting: ['overview', 'curing', 'casting'],
-  // Add 'labour' to other roles if needed
+
+  AHUJA:       ['overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork','labour'],
+  ABBOTT:      ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork','labour'],
+  RANA:        ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
+  RNTU:        ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
+  SCOPE:       ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
+  NEWSCOPE:    ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
+  GUPTA_JI_C:  ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
+  GUPTA_JI_B:  ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
+  GUPTA_JI_D:  ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
+  Scope_Adjusting: ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
+  Udit_Agarwal: ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
+
 };
 
 const DEFAULT_PERMISSIONS = ['overview'];
