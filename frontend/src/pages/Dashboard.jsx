@@ -302,8 +302,9 @@ const ROLE_PERMISSIONS = {
   GUPTA_JI_C:  ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
   GUPTA_JI_B:  ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
   GUPTA_JI_D:  ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
-  Scope_Adjusting: ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
-  Udit_Agarwal: ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
+  Scope_Adjusting: ['overview', 'curing','casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
+  UDIT_AGARWAL: ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
+  MANISH_JAIN: ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
 
 };
 

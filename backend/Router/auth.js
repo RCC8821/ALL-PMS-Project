@@ -17,7 +17,10 @@ const ALLOWED_USER_TYPES = [
   'GUPTA_JI_C',
   'GUPTA_JI_B',
   'GUPTA_JI_D',
-  'Scope_Adjusting'
+  'Scope_Adjusting',
+  'Manish_Jain',
+  'UDIT_AGARWAL',
+  'MANISH_JAIN'
 ];
 
 // Login Route
