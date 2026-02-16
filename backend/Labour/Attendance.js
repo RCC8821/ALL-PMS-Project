@@ -635,30 +635,114 @@ router.get('/Labour-dropdown-data', async (req, res) => {
 // POST /Labour-add-employee-name
 // ✨ नया API - Employee नाम + Labour Type जोड़ने के लिए
 // ────────────────────────────────────────────────
+
+
+// router.post('/Labour-add-employee-name', async (req, res) => {
+//   try {
+//     const { firstName, lastName, laborType } = req.body;
+
+//     // Validation
+//     if (!firstName || !firstName.trim()) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'First Name is required'
+//       });
+//     }
+
+//     if (!lastName || !lastName.trim()) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Last Name is required'
+//       });
+//     }
+
+//     if (!laborType || !laborType.trim()) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Labour Type is required'
+//       });
+//     }
+
+//     const fullName = `${firstName.trim()} ${lastName.trim()}`;
+
+//     console.log(`\n📝 Adding new employee:`);
+//     console.log(`   Name: ${fullName}`);
+//     console.log(`   Labour Type: ${laborType}`);
+
+//     // Check if employee name already exists
+//     const namesRes = await sheets.spreadsheets.values.get({
+//       spreadsheetId: LABOUR_ID,
+//       range: 'Names!A2:B',
+//       majorDimension: 'ROWS',
+//       valueRenderOption: 'UNFORMATTED_VALUE',
+//     });
+
+//     const existingNames = namesRes.data.values || [];
+//     const nameExists = existingNames.some(row => {
+//       const existingName = row[1] ? String(row[1]).trim() : '';
+//       return existingName.toLowerCase() === fullName.toLowerCase();
+//     });
+
+//     if (nameExists) {
+//       return res.status(400).json({
+//         success: false,
+//         message: `Employee "${fullName}" already exists in the database`
+//       });
+//     }
+
+//     // Generate next unique ID
+//     const newId = await getNextEmployeeId();
+//     console.log(`   Generated ID: ${newId}`);
+
+//     // Find next empty row
+//     const emptyRow = await getNextEmptyRowInNames();
+//     console.log(`   Target row: ${emptyRow}`);
+
+//     // Add to Names sheet - use UPDATE instead of APPEND
+//     await sheets.spreadsheets.values.update({
+//       spreadsheetId: LABOUR_ID,
+//       range: `Names!A${emptyRow}:C${emptyRow}`,
+//       valueInputOption: 'USER_ENTERED',
+//       resource: {
+//         values: [[newId, fullName, laborType]]
+//       }
+//     });
+
+//     console.log(`✅ Employee added successfully at row ${emptyRow}\n`);
+
+//     res.json({
+//       success: true,
+//       message: `Employee "${fullName}" added successfully with ID: ${newId}`,
+//       data: {
+//         id: newId,
+//         name: fullName,
+//         laborType: laborType
+//       }
+//     });
+//   } catch (error) {
+//     console.error('Error in Labour-add-employee-name:', error);
+//     res.status(500).json({
+//       success: false,
+//       message: 'Failed to add employee',
+//       error: error.message || 'Internal server error'
+//     });
+//   }
+// });
+
+
 router.post('/Labour-add-employee-name', async (req, res) => {
   try {
     const { firstName, lastName, laborType } = req.body;
 
     // Validation
     if (!firstName || !firstName.trim()) {
-      return res.status(400).json({
-        success: false,
-        message: 'First Name is required'
-      });
+      return res.status(400).json({ success: false, message: 'First Name is required' });
     }
-
     if (!lastName || !lastName.trim()) {
-      return res.status(400).json({
-        success: false,
-        message: 'Last Name is required'
-      });
+      return res.status(400).json({ success: false, message: 'Last Name is required' });
     }
-
     if (!laborType || !laborType.trim()) {
-      return res.status(400).json({
-        success: false,
-        message: 'Labour Type is required'
-      });
+      return res.status(400).json({ success: false, message: 'Labour Type is required' });
     }
 
     const fullName = `${firstName.trim()} ${lastName.trim()}`;
@@ -667,16 +751,20 @@ router.post('/Labour-add-employee-name', async (req, res) => {
     console.log(`   Name: ${fullName}`);
     console.log(`   Labour Type: ${laborType}`);
 
-    // Check if employee name already exists
+    // ────────────────────────────────────────────────
+    //   Read existing data from Names sheet
+    // ────────────────────────────────────────────────
     const namesRes = await sheets.spreadsheets.values.get({
       spreadsheetId: LABOUR_ID,
-      range: 'Names!A2:B',
+      range: 'Names!A2:C',           // A = ID, B = Name, C = Labor Type
       majorDimension: 'ROWS',
       valueRenderOption: 'UNFORMATTED_VALUE',
     });
 
-    const existingNames = namesRes.data.values || [];
-    const nameExists = existingNames.some(row => {
+    const rows = namesRes.data.values || [];
+
+    // Check if name already exists (case-insensitive)
+    const nameExists = rows.some(row => {
       const existingName = row[1] ? String(row[1]).trim() : '';
       return existingName.toLowerCase() === fullName.toLowerCase();
     });
@@ -688,15 +776,40 @@ router.post('/Labour-add-employee-name', async (req, res) => {
       });
     }
 
-    // Generate next unique ID
-    const newId = await getNextEmployeeId();
+    // ────────────────────────────────────────────────
+    //   Collect all existing numeric parts from IDs like N-0001, N-0002...
+    // ────────────────────────────────────────────────
+    const usedNumbers = new Set();
+
+    for (const row of rows) {
+      const id = row[0] ? String(row[0]).trim() : '';
+      if (id.startsWith('N-')) {
+        const numPart = id.substring(2);           // "0001", "0007", etc.
+        const num = parseInt(numPart, 10);
+        if (!isNaN(num)) {
+          usedNumbers.add(num);
+        }
+      }
+    }
+
+    // Find the smallest missing number starting from 1
+    let nextNum = 1;
+    while (usedNumbers.has(nextNum)) {
+      nextNum++;
+    }
+
+    const newId = `N-${String(nextNum).padStart(4, '0')}`; // N-0001, N-0002...
     console.log(`   Generated ID: ${newId}`);
 
-    // Find next empty row
+    // ────────────────────────────────────────────────
+    //   Find next empty row (same logic you had)
+    // ────────────────────────────────────────────────
     const emptyRow = await getNextEmptyRowInNames();
     console.log(`   Target row: ${emptyRow}`);
 
-    // Add to Names sheet - use UPDATE instead of APPEND
+    // ────────────────────────────────────────────────
+    //   Write the new row
+    // ────────────────────────────────────────────────
     await sheets.spreadsheets.values.update({
       spreadsheetId: LABOUR_ID,
       range: `Names!A${emptyRow}:C${emptyRow}`,
@@ -706,9 +819,9 @@ router.post('/Labour-add-employee-name', async (req, res) => {
       }
     });
 
-    console.log(`✅ Employee added successfully at row ${emptyRow}\n`);
+    console.log(`✅ Employee added successfully at row ${emptyRow} with ID ${newId}\n`);
 
-    res.json({
+    return res.json({
       success: true,
       message: `Employee "${fullName}" added successfully with ID: ${newId}`,
       data: {
@@ -717,15 +830,17 @@ router.post('/Labour-add-employee-name', async (req, res) => {
         laborType: laborType
       }
     });
+
   } catch (error) {
     console.error('Error in Labour-add-employee-name:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: 'Failed to add employee',
       error: error.message || 'Internal server error'
     });
   }
 });
+
 
 // ────────────────────────────────────────────────
 // POST /Labour-submit-entries     (In / Attendance form)
