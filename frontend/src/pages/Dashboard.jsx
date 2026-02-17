@@ -326,7 +326,7 @@ const ROLE_PERMISSIONS = {
   GUPTA_JI_C:  ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
   GUPTA_JI_B:  ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
   GUPTA_JI_D:  ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
-  Scope_Adjusting: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
+  SCOPE_ADJUSTING: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
   UDIT_AGARWAL: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
   MANISH_JAIN: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
 };
