@@ -78,45 +78,111 @@ async function uploadToGoogleDrive(base64Data, fileName) {
 }
 
 
+// router.get('/Get-fullkitting-data', async (req, res) => {
+//   try {
+//     const response = await sheets.spreadsheets.values.get({
+//       spreadsheetId,
+//       range: 'FMS!A7:ED',
+//     });
+
+//     const rows = response.data.values || [];
+
+//     const filteredData = rows
+//       .filter(row => {
+//         if (!row || row.every(cell => !cell || cell.toString().trim() === '')) {
+//           return false; // पूरी तरह खाली row
+//         }
+
+//         const status = (row[11] || '').toString().trim().toLowerCase(); // ← यहाँ सही index डालें (11 या 133?)
+        
+//         // अगर status वाला column खाली भी हो तो दिखाना है या नहीं? → आप decide करें
+//         // return status !== 'done' && status !== '';  
+//         return status !== 'done';
+//       })
+
+
+
+//       .map(row => ({
+//         Planned:    row[9]  || '',
+//         CuringUID:  row[1]  || '',
+//         UID:        row[2]  || '',
+//         Zone:       row[3]  || '',
+//         Activity:   row[4]  || '',
+//         SubActivity:row[5]  || '',
+//         ActualStart:row[6]  || '',
+//         ActualEnd:  row[7]  || '',
+//         SiteName:   row[8]  || '',
+//         status:     row[11] || '',
+//         status1: row[133] || '',
+//       }));
+
+//     res.json({ success: true, data: filteredData });
+
+//   } catch (error) {
+//     console.error('Error fetching FULLKITTING data:', error);
+//     res.status(500).json({ error: 'Failed to fetch FULLKITTING data' });
+//   }
+// });
+
+
+
 router.get('/Get-fullkitting-data', async (req, res) => {
   try {
     const response = await sheets.spreadsheets.values.get({
-      spreadsheetId,
-      range: 'FMS!A7:ED',
+      spreadsheetId,           // आपका spreadsheet ID यहाँ define होना चाहिए
+      range: 'FMS!A7:ED',      // A7 से ED तक (column 133 तक cover हो जाता है)
     });
 
     const rows = response.data.values || [];
 
     const filteredData = rows
       .filter(row => {
-        if (!row || row.every(cell => !cell || cell.toString().trim() === '')) {
-          return false; // पूरी तरह खाली row
+        // पूरी तरह खाली row (सभी cells empty या whitespace) → skip
+        if (!row || row.every(cell => !cell || String(cell).trim() === '')) {
+          return false;
         }
 
-        const status = (row[11] || '').toString().trim().toLowerCase(); // ← यहाँ सही index डालें (11 या 133?)
-        
-        // अगर status वाला column खाली भी हो तो दिखाना है या नहीं? → आप decide करें
-        // return status !== 'done' && status !== '';  
-        return status !== 'done';
+        // status1 (column 133 → index 133, क्योंकि A=0, B=1, ..., ED=133?)
+        const status1Value = (row[133] || '').toString().trim().toLowerCase();
+
+        // status1 में "done" है (case-insensitive) → इस row को skip करो
+        if (status1Value === 'done') {
+          return false;
+        }
+
+        // बाकी सभी cases में row include करो
+        return true;
       })
       .map(row => ({
-        Planned:    row[9]  || '',
-        CuringUID:  row[1]  || '',
-        UID:        row[2]  || '',
-        Zone:       row[3]  || '',
-        Activity:   row[4]  || '',
-        SubActivity:row[5]  || '',
-        ActualStart:row[6]  || '',
-        ActualEnd:  row[7]  || '',
-        SiteName:   row[8]  || '',
-        status:     row[11] || ''
+        Planned:     row[9]   || '',
+        CuringUID:   row[1]   || '',
+        UID:         row[2]   || '',
+        Zone:        row[3]   || '',
+        Activity:    row[4]   || '',
+        SubActivity: row[5]   || '',
+        ActualStart: row[6]   || '',
+        ActualEnd:   row[7]   || '',
+        SiteName:    row[8]   || '',
+        status:      row[11]  || '',   // column L (index 11)
+        status1:     row[133] || '',   // column ED? (index 133)
       }));
 
-    res.json({ success: true, data: filteredData });
+    res.json({
+      success: true,
+      count: filteredData.length,
+      data: filteredData
+    });
 
   } catch (error) {
-    console.error('Error fetching FULLKITTING data:', error);
-    res.status(500).json({ error: 'Failed to fetch FULLKITTING data' });
+    console.error('Error fetching FULLKITTING data:', error.message);
+    if (error.response) {
+      console.error('Google Sheets API response:', error.response.data);
+    }
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch fullkitting data',
+      details: error.message
+    });
   }
 });
 

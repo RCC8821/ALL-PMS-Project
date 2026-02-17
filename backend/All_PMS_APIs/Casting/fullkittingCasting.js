@@ -119,11 +119,153 @@ router.get("/Get-fullkitting-Casting-data", async (req, res) => {
 });
 
 // === पुरानी Fullkitting API (कोई बदलाव नहीं) ===
+// router.post("/submit-Casting-Fullkitting", async (req, res) => {
+//   try {
+//     const {
+//       CuringUID,
+//       // status = "",
+//       cementImage,
+//       aggregateImage,
+//       sandImage,
+//       mortarImage,
+//       steelImage,
+//       bindingWireImage,
+//       coverBlockImage,
+//       shutteringMaterialImage,
+//       handToolsImage,
+//       cutterMachineImage,
+//       grinderMachineImage,
+//       admixtures = "",
+//       mixtureMachine = "",
+//     } = req.body;
+
+//     if (!CuringUID ) {
+//       return res
+//         .status(400)
+//         .json({ success: false, error: "CuringUID  जरूरी हैं" });
+//     }
+
+//     console.log(`[FULLKITTING] CuringUID: ${CuringUID}, `);
+
+//     const cementUrl = await uploadIfPresent(cementImage, "cement", CuringUID);
+//     const aggregateUrl = await uploadIfPresent(
+//       aggregateImage,
+//       "aggregate",
+//       CuringUID,
+//     );
+//     const sandUrl = await uploadIfPresent(sandImage, "sand", CuringUID);
+//     const mortarUrl = await uploadIfPresent(mortarImage, "mortar", CuringUID);
+//     const steelUrl = await uploadIfPresent(steelImage, "steel", CuringUID);
+//     const bindingWireUrl = await uploadIfPresent(
+//       bindingWireImage,
+//       "bindingwire",
+//       CuringUID,
+//     );
+//     const coverBlockUrl = await uploadIfPresent(
+//       coverBlockImage,
+//       "coverblock",
+//       CuringUID,
+//     );
+//     const shutteringMaterialUrl = await uploadIfPresent(
+//       shutteringMaterialImage,
+//       "shuttering",
+//       CuringUID,
+//     );
+//     const handToolsUrl = await uploadIfPresent(
+//       handToolsImage,
+//       "handtools",
+//       CuringUID,
+//     );
+//     const cutterMachineUrl = await uploadIfPresent(
+//       cutterMachineImage,
+//       "cuttermachine",
+//       CuringUID,
+//     );
+//     const grinderMachineUrl = await uploadIfPresent(
+//       grinderMachineImage,
+//       "grindermachine",
+//       CuringUID,
+//     );
+
+//     const values = await sheets.spreadsheets.values.get({
+//       spreadsheetId: castingSheetID,
+//       range: "FMS!B7:Z",
+//     });
+
+//     const rows = values.data.values || [];
+//     const rowIndex = rows.findIndex(
+//       (row) =>
+//         row[0]?.toString().trim().toUpperCase() ===
+//         CuringUID.trim().toUpperCase(),
+//     );
+
+//     if (rowIndex === -1) {
+//       return res
+//         .status(400)
+//         .json({ success: false, error: `CuringUID "${CuringUID}" नहीं मिला` });
+//     }
+
+//     const sheetRow = rowIndex + 8;
+
+//     const updates = [
+      
+//       { range: `FMS!M${sheetRow}`, values: [[cementUrl]] },
+//       { range: `FMS!N${sheetRow}`, values: [[aggregateUrl]] },
+//       { range: `FMS!O${sheetRow}`, values: [[sandUrl]] },
+//       { range: `FMS!P${sheetRow}`, values: [[mortarUrl]] },
+//       { range: `FMS!Q${sheetRow}`, values: [[admixtures]] },
+//       { range: `FMS!R${sheetRow}`, values: [[steelUrl]] },
+//       { range: `FMS!S${sheetRow}`, values: [[bindingWireUrl]] },
+//       { range: `FMS!T${sheetRow}`, values: [[coverBlockUrl]] },
+//       { range: `FMS!U${sheetRow}`, values: [[shutteringMaterialUrl]] },
+//       { range: `FMS!V${sheetRow}`, values: [[mixtureMachine]] },
+//       { range: `FMS!W${sheetRow}`, values: [[handToolsUrl]] },
+//       { range: `FMS!X${sheetRow}`, values: [[cutterMachineUrl]] },
+//       { range: `FMS!Y${sheetRow}`, values: [[grinderMachineUrl]] },
+//     ];
+
+//     await sheets.spreadsheets.values.batchUpdate({
+//       spreadsheetId: castingSheetID,
+//       resource: {
+//         valueInputOption: "USER_ENTERED",
+//         data: updates.map((u) => ({
+//           range: u.range,
+//           majorDimension: "ROWS",
+//           values: u.values,
+//         })),
+//       },
+//     });
+
+//     res.json({
+//       success: true,
+//       message: "Fullkitting data सेव हो गया",
+//       curingUID: CuringUID,
+//       updatedRow: sheetRow,
+//       uploadedImages: {
+//         cementUrl,
+//         aggregateUrl,
+//         sandUrl,
+//         mortarUrl,
+//         steelUrl,
+//         bindingWireUrl,
+//         coverBlockUrl,
+//         shutteringMaterialUrl,
+//         handToolsUrl,
+//         cutterMachineUrl,
+//         grinderMachineUrl,
+//       },
+//     });
+//   } catch (error) {
+//     console.error("Fullkitting Error:", error);
+//     res.status(500).json({ success: false, error: error.message });
+//   }
+// });
+
+
 router.post("/submit-Casting-Fullkitting", async (req, res) => {
   try {
     const {
       CuringUID,
-      // status = "",
       cementImage,
       aggregateImage,
       sandImage,
@@ -139,91 +281,80 @@ router.post("/submit-Casting-Fullkitting", async (req, res) => {
       mixtureMachine = "",
     } = req.body;
 
-    if (!CuringUID ) {
-      return res
-        .status(400)
-        .json({ success: false, error: "CuringUID  जरूरी हैं" });
+    if (!CuringUID || typeof CuringUID !== "string" || CuringUID.trim() === "") {
+      return res.status(400).json({
+        success: false,
+        error: "CuringUID जरूरी है और valid string होना चाहिए",
+      });
     }
 
-    console.log(`[FULLKITTING] CuringUID: ${CuringUID}, `);
+    const normalizedCuringUID = CuringUID.trim().toUpperCase();
+    console.log(`[FULLKITTING] Processing CuringUID: ${normalizedCuringUID}`);
 
+    // Images upload (assuming uploadIfPresent returns URL or empty string/null)
     const cementUrl = await uploadIfPresent(cementImage, "cement", CuringUID);
-    const aggregateUrl = await uploadIfPresent(
-      aggregateImage,
-      "aggregate",
-      CuringUID,
-    );
+    const aggregateUrl = await uploadIfPresent(aggregateImage, "aggregate", CuringUID);
     const sandUrl = await uploadIfPresent(sandImage, "sand", CuringUID);
     const mortarUrl = await uploadIfPresent(mortarImage, "mortar", CuringUID);
     const steelUrl = await uploadIfPresent(steelImage, "steel", CuringUID);
-    const bindingWireUrl = await uploadIfPresent(
-      bindingWireImage,
-      "bindingwire",
-      CuringUID,
-    );
-    const coverBlockUrl = await uploadIfPresent(
-      coverBlockImage,
-      "coverblock",
-      CuringUID,
-    );
-    const shutteringMaterialUrl = await uploadIfPresent(
-      shutteringMaterialImage,
-      "shuttering",
-      CuringUID,
-    );
-    const handToolsUrl = await uploadIfPresent(
-      handToolsImage,
-      "handtools",
-      CuringUID,
-    );
-    const cutterMachineUrl = await uploadIfPresent(
-      cutterMachineImage,
-      "cuttermachine",
-      CuringUID,
-    );
-    const grinderMachineUrl = await uploadIfPresent(
-      grinderMachineImage,
-      "grindermachine",
-      CuringUID,
-    );
+    const bindingWireUrl = await uploadIfPresent(bindingWireImage, "bindingwire", CuringUID);
+    const coverBlockUrl = await uploadIfPresent(coverBlockImage, "coverblock", CuringUID);
+    const shutteringMaterialUrl = await uploadIfPresent(shutteringMaterialImage, "shuttering", CuringUID);
+    const handToolsUrl = await uploadIfPresent(handToolsImage, "handtools", CuringUID);
+    const cutterMachineUrl = await uploadIfPresent(cutterMachineImage, "cuttermachine", CuringUID);
+    const grinderMachineUrl = await uploadIfPresent(grinderMachineImage, "grindermachine", CuringUID);
 
+    // Google Sheets: Get data starting from B7
     const values = await sheets.spreadsheets.values.get({
       spreadsheetId: castingSheetID,
-      range: "FMS!B7:Z",
+      range: "FMS!B7:Z",   // B7 से शुरू, Z तक (जितने कॉलम चाहिए)
     });
 
     const rows = values.data.values || [];
-    const rowIndex = rows.findIndex(
-      (row) =>
-        row[0]?.toString().trim().toUpperCase() ===
-        CuringUID.trim().toUpperCase(),
-    );
 
-    if (rowIndex === -1) {
-      return res
-        .status(400)
-        .json({ success: false, error: `CuringUID "${CuringUID}" नहीं मिला` });
+    if (rows.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Sheet में कोई डेटा नहीं मिला (B7 से नीचे)",
+      });
     }
 
-    const sheetRow = rowIndex + 8;
+    // Find row index (0-based) where column B (index 0) matches CuringUID
+    const rowIndex = rows.findIndex((row) => {
+      const cellValue = row[0]?.toString().trim().toUpperCase();
+      return cellValue === normalizedCuringUID;
+    });
 
+    if (rowIndex === -1) {
+      return res.status(400).json({
+        success: false,
+        error: `CuringUID "${CuringUID}" sheet में नहीं मिला`,
+      });
+    }
+
+    // Important: B7 → row 7 → index 0 → sheetRow = index + 7
+    const sheetRow = rowIndex + 7;
+
+    console.log(`[FULLKITTING] Match found at sheet row: ${sheetRow} (1-based)`);
+
+    // Prepare batch update
     const updates = [
-      
-      { range: `FMS!M${sheetRow}`, values: [[cementUrl]] },
-      { range: `FMS!N${sheetRow}`, values: [[aggregateUrl]] },
-      { range: `FMS!O${sheetRow}`, values: [[sandUrl]] },
-      { range: `FMS!P${sheetRow}`, values: [[mortarUrl]] },
-      { range: `FMS!Q${sheetRow}`, values: [[admixtures]] },
-      { range: `FMS!R${sheetRow}`, values: [[steelUrl]] },
-      { range: `FMS!S${sheetRow}`, values: [[bindingWireUrl]] },
-      { range: `FMS!T${sheetRow}`, values: [[coverBlockUrl]] },
-      { range: `FMS!U${sheetRow}`, values: [[shutteringMaterialUrl]] },
-      { range: `FMS!V${sheetRow}`, values: [[mixtureMachine]] },
-      { range: `FMS!W${sheetRow}`, values: [[handToolsUrl]] },
-      { range: `FMS!X${sheetRow}`, values: [[cutterMachineUrl]] },
-      { range: `FMS!Y${sheetRow}`, values: [[grinderMachineUrl]] },
+      { range: `FMS!M${sheetRow}`, values: [[cementUrl || ""]] },
+      { range: `FMS!N${sheetRow}`, values: [[aggregateUrl || ""]] },
+      { range: `FMS!O${sheetRow}`, values: [[sandUrl || ""]] },
+      { range: `FMS!P${sheetRow}`, values: [[mortarUrl || ""]] },
+      { range: `FMS!Q${sheetRow}`, values: [[admixtures || ""]] },
+      { range: `FMS!R${sheetRow}`, values: [[steelUrl || ""]] },
+      { range: `FMS!S${sheetRow}`, values: [[bindingWireUrl || ""]] },
+      { range: `FMS!T${sheetRow}`, values: [[coverBlockUrl || ""]] },
+      { range: `FMS!U${sheetRow}`, values: [[shutteringMaterialUrl || ""]] },
+      { range: `FMS!V${sheetRow}`, values: [[mixtureMachine || ""]] },
+      { range: `FMS!W${sheetRow}`, values: [[handToolsUrl || ""]] },
+      { range: `FMS!X${sheetRow}`, values: [[cutterMachineUrl || ""]] },
+      { range: `FMS!Y${sheetRow}`, values: [[grinderMachineUrl || ""]] },
     ];
 
+    // Batch update
     await sheets.spreadsheets.values.batchUpdate({
       spreadsheetId: castingSheetID,
       resource: {
@@ -236,33 +367,35 @@ router.post("/submit-Casting-Fullkitting", async (req, res) => {
       },
     });
 
+    // Success response
     res.json({
       success: true,
-      message: "Fullkitting data सेव हो गया",
+      message: "Fullkitting data सफलतापूर्वक सेव हो गया",
       curingUID: CuringUID,
       updatedRow: sheetRow,
       uploadedImages: {
-        cementUrl,
-        aggregateUrl,
-        sandUrl,
-        mortarUrl,
-        steelUrl,
-        bindingWireUrl,
-        coverBlockUrl,
-        shutteringMaterialUrl,
-        handToolsUrl,
-        cutterMachineUrl,
-        grinderMachineUrl,
+        cement: cementUrl,
+        aggregate: aggregateUrl,
+        sand: sandUrl,
+        mortar: mortarUrl,
+        steel: steelUrl,
+        bindingWire: bindingWireUrl,
+        coverBlock: coverBlockUrl,
+        shutteringMaterial: shutteringMaterialUrl,
+        handTools: handToolsUrl,
+        cutterMachine: cutterMachineUrl,
+        grinderMachine: grinderMachineUrl,
       },
     });
   } catch (error) {
-    console.error("Fullkitting Error:", error);
-    res.status(500).json({ success: false, error: error.message });
+    console.error("[FULLKITTING] Error:", error);
+    res.status(500).json({
+      success: false,
+      error: "सर्वर में समस्या आई, कृपया बाद में प्रयास करें",
+      details: error.message,
+    });
   }
 });
-
-
-
 
 
 router.post("/submit-casting-checklist-item", async (req, res) => {
