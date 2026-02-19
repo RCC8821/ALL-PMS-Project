@@ -191,11 +191,11 @@ const Casting = () => {
         alert('Safety Checklist का Status select करें');
         return;
       }
-      const keys = ['helmet', 'mask', 'gloves', 'firstAidBox', 'shoes'];
-      if (!keys.every((k) => checklistImage[k])) {
-        alert('Safety Checklist के सभी 5 items की फोटो अपलोड करें');
-        return;
-      }
+      // const keys = ['helmet', 'mask', 'gloves', 'firstAidBox', 'shoes'];
+      // if (!keys.every((k) => checklistImage[k])) {
+      //   alert('Safety Checklist के सभी 5 items की फोटो अपलोड करें');
+      //   return;
+      // }
     } else if (item === 'Casting') {
       if (castingForm.status === '---- Select ----') {
         alert('Status select करें');
