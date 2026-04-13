@@ -28,6 +28,12 @@ const Electrical = require('./All_PMS_APIs/Electrical/FullKitting')
 
 const Labour = require('./Labour/Attendance')
 
+////// labour Attendance
+
+const LabourAttendance= require('./LabourAttendance/LabourAttendance')
+
+
+
 const app = express();
 // 1. CORS (Pehle daalo)
 app.use(cors({
@@ -80,6 +86,12 @@ app.use('/api/electrical',Electrical)
 /////// labour api 
 
 app.use('/api',Labour)
+
+
+/////  
+
+
+app.use('/api/Attendance',LabourAttendance)
 
 // 7. Health Check
 app.get('/', (req, res) => {

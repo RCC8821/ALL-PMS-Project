@@ -14,6 +14,8 @@ import ElectricalWork from "./components/Electrical/ElectricalWork";
 
 import Attendance from "./components/LabourForm/Attendance";
 
+import LabourAttendance from "./components/LabourAttendance/LabourAttendance";
+
 const ProtectedRoute = ({ children }) => {
   const { token } = useSelector((state) => state.auth);
   return token ? children : <Navigate to="/" />;
@@ -39,7 +41,8 @@ const App = () => {
           <Route path="waterproofing" element={< BrickWork/>} /> 
           <Route path="Electrical" element={< ElectricalWork/>} /> 
           <Route path="Attendance" element={< Attendance/>} /> 
-
+          <Route path="labour-Attendance" element={< LabourAttendance/>} /> 
+    
 
         </Route>
 

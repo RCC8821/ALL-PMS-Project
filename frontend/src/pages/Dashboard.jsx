@@ -1,11 +1,12 @@
 
+
 // import React, { useState, useMemo, useEffect } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { useSearchParams } from 'react-router-dom';
 
 // import {
 //   LayoutDashboard, Droplets, Hammer, ShieldCheck,
-//   Pickaxe, Landmark, Lock, LogOut, Users, HardHat, Clock, DollarSign,
+//   Pickaxe, Landmark, Lock, LogOut, Users, Clock,
 // } from 'lucide-react';
 
 // // Existing components
@@ -15,48 +16,41 @@
 // import BrickWork from '../components/Brickswork/BrickWork';
 // import ElectricalWork from '../components/Electrical/ElectricalWork';
 
-// // Labour sub-components (create these files!)
+// // Labour components
 // import LabourAttendance from '../components/LabourForm/Attendance';
+// import LabourAttendance2 from '../components/LabourAttendance/LabourAttendance';
 
-
-// import { logout } from '../../src/features/Auth/AuthSlice'; // adjust path if needed
+// import { logout } from '../../src/features/Auth/AuthSlice';
 
 // const ROLE_PERMISSIONS = {
 //   ADMIN: [
-//     'overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'LabourAttendance'
+//     'overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'
 //   ],
-
-//   AHUJA:       ['overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork','labour'],
-//   ABBOTT:      ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork','labour'],
-//   RANA:        ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
-//   RNTU:        ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
-//   SCOPE:       ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
-//   NEWSCOPE:    ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
-//   GUPTA_JI_C:  ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
-//   GUPTA_JI_B:  ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
-//   GUPTA_JI_D:  ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
-//   Scope_Adjusting: ['overview', 'curing','casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
-//   UDIT_AGARWAL: ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
-//   MANISH_JAIN: ['overview', 'curing', 'casting','overview', 'curing', 'casting','waterproofing','BrickWork','ElectricalWork' ,'labour'],
-
+//   AHUJA: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+//   ABBOTT: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+//   RANA: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+//   RNTU: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+//   SCOPE: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+//   NEWSCOPE: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+//   GUPTA_JI_C: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+//   GUPTA_JI_B: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+//   GUPTA_JI_D: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+//   SCOPE_ADJUSTING: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+//   UDIT_AGARWAL: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+//   MANISH_JAIN: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
 // };
 
 // const DEFAULT_PERMISSIONS = ['overview'];
 
 // const MODULE_CONFIG = [
-//   { id: 'overview',       label: 'Overview',       icon: LayoutDashboard, color: 'blue'    },
-//   { id: 'curing',         label: 'Curing',         icon: Droplets,        color: 'cyan'    },
-//   { id: 'casting',        label: 'Casting',        icon: Hammer,          color: 'indigo'  },
-//   { id: 'waterproofing',  label: 'Waterproofing',  icon: ShieldCheck,     color: 'teal'    },
-//   { id: 'BrickWork',      label: 'Brick Work',     icon: Pickaxe,         color: 'amber'   },
-//   { id: 'ElectricalWork', label: 'Electrical',     icon: Landmark,        color: 'violet'  },
-//   { id: 'labour',         label: 'Labour',         icon: Users,           color: 'orange'  },
-// ];
-
-// const LABOUR_SUB_MODULES = [
-//   { id: 'LabourAttendance', label: 'LabourAttendance', icon: Clock,     component: LabourAttendance },
-
-//   // Add more sub-modules later if needed
+//   { id: 'overview', label: 'Overview', icon: LayoutDashboard, color: 'blue' },
+//   { id: 'curing', label: 'Curing', icon: Droplets, color: 'cyan' },
+//   { id: 'casting', label: 'Casting', icon: Hammer, color: 'indigo' },
+//   { id: 'waterproofing', label: 'Waterproofing', icon: ShieldCheck, color: 'teal' },
+//   { id: 'BrickWork', label: 'Brick Work', icon: Pickaxe, color: 'amber' },
+//   { id: 'ElectricalWork', label: 'Electrical', icon: Landmark, color: 'violet' },
+//   { id: 'labour', label: 'Labour', icon: Users, color: 'orange' },
+//   { id: 'labourAttendance', label: 'Labour Attendance', icon: Clock, color: 'green' },
 // ];
 
 // const Dashboard = () => {
@@ -65,7 +59,6 @@
 
 //   const [searchParams, setSearchParams] = useSearchParams();
 //   const urlTab = searchParams.get('tab') || 'overview';
-//   const urlSub = searchParams.get('sub') || null;
 
 //   // Normalize user type
 //   const normalizedUserType = (rawUserType || '').trim().toUpperCase().replace(/\s+/g, '');
@@ -93,27 +86,6 @@
 //     setSearchParams({ tab: newTab }, { replace: true });
 //   };
 
-//   // Labour sub-tab logic
-//   const isLabourTab = activeTab === 'labour';
-
-//   const [activeSub, setActiveSub] = useState(null);
-
-//   useEffect(() => {
-//     if (isLabourTab) {
-//       const validSubs = LABOUR_SUB_MODULES.map(s => s.id);
-//       const initialSub = urlSub && validSubs.includes(urlSub) ? urlSub : LABOUR_SUB_MODULES[0]?.id || null;
-//       setActiveSub(initialSub);
-//     } else {
-//       setActiveSub(null);
-//     }
-//   }, [isLabourTab, urlSub]);
-
-//   const handleSubChange = (newSub) => {
-//     if (!LABOUR_SUB_MODULES.some(s => s.id === newSub)) return;
-//     setActiveSub(newSub);
-//     setSearchParams({ tab: 'labour', sub: newSub }, { replace: true });
-//   };
-
 //   // Protect if permissions change
 //   useEffect(() => {
 //     if (!allowedModules.some(m => m.id === activeTab)) {
@@ -137,7 +109,7 @@
 //     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100">
 //       {/* Navbar */}
 //       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-sm">
-//         <div className="max-w-7xl mx-auto px-5 sm:px-8">
+//         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
 //           <div className="flex items-center justify-between h-16">
 //             <div className="flex items-center gap-3">
 //               <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-lg">
@@ -171,7 +143,7 @@
 //       </nav>
 
 //       {/* Main Content */}
-//       <main className="pt-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+//       <main className="pt-20 px-4 sm:px-6 lg:px-8 xl:px-10 max-w-screen-2xl mx-auto">
 //         {!hasAccess ? (
 //           <div className="flex flex-col items-center justify-center min-h-[70vh] text-center">
 //             <Lock size={64} className="text-red-500 mb-6" />
@@ -184,8 +156,8 @@
 //         ) : (
 //           <>
 //             {/* Main Tabs */}
-//             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-2 mb-6 sticky top-[4.5rem] z-40">
-//               <div className="flex overflow-x-auto gap-2 py-1 no-scrollbar">
+//             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-2.5 mb-6 sticky top-[4.5rem] z-40">
+//               <div className="flex overflow-x-auto gap-2.5 py-1.5 no-scrollbar snap-x snap-mandatory">
 //                 {allowedModules.map((module) => {
 //                   const isActive = activeTab === module.id;
 //                   return (
@@ -193,7 +165,7 @@
 //                       key={module.id}
 //                       onClick={() => handleTabChange(module.id)}
 //                       className={`
-//                         flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 min-w-[100px]
+//                         flex-shrink-0 flex items-center gap-2.5 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-200 snap-start
 //                         ${isActive
 //                           ? 'bg-cyan-600 text-white shadow-md shadow-cyan-500/30 ring-1 ring-cyan-700/20'
 //                           : 'text-gray-700 hover:bg-gray-100 hover:text-cyan-700'
@@ -201,7 +173,7 @@
 //                       `}
 //                     >
 //                       <module.icon 
-//                         size={18} 
+//                         size={19} 
 //                         className={isActive ? 'text-white' : 'text-cyan-600'}
 //                       />
 //                       <span>{module.label}</span>
@@ -211,17 +183,16 @@
 //               </div>
 //             </div>
 
-          
-
 //             {/* Content Area */}
 //             <div className="bg-white rounded-2xl shadow-xl border border-gray-100 min-h-[70vh]">
-//               <div className="p-6 md:p-10">
+//               <div className="p-6 md:p-8 lg:p-10">
+//                 {/* Overview */}
 //                 {activeTab === 'overview' && (
 //                   <div className="space-y-8">
 //                     <h2 className="text-3xl font-bold text-gray-800">
 //                       Welcome, <span className="text-blue-700 capitalize">{normalizedUserType}</span>!
 //                     </h2>
-//                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+//                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 //                       {allowedModules
 //                         .filter(m => m.id !== 'overview')
 //                         .map(m => (
@@ -241,31 +212,18 @@
 //                   </div>
 //                 )}
 
-//                 {activeTab === 'curing'        && <Curing />}
-//                 {activeTab === 'casting'       && <Casting />}
+//                 {/* Individual Modules */}
+//                 {activeTab === 'curing' && <Curing />}
+//                 {activeTab === 'casting' && <Casting />}
 //                 {activeTab === 'waterproofing' && <Waterproofing />}
-//                 {activeTab === 'BrickWork'     && <BrickWork />}
-//                 {activeTab === 'ElectricalWork'&& <ElectricalWork />}
-
-//                 {/* Labour Content */}
-//                 {isLabourTab && (
-//                   <>
-//                     {activeSub === 'LabourAttendance' && <LabourAttendance />}
-                   
-
-//                     {!activeSub && LABOUR_SUB_MODULES.length > 0 && (
-//                       <div className="flex flex-col items-center justify-center py-20 text-gray-500">
-//                         <Users size={64} className="mb-6 opacity-70" />
-//                         <h3 className="text-2xl font-semibold text-gray-700 mb-2">Select a Labour Module</h3>
-//                         <p>Choose from Attendance, Advances, or Payments</p>
-//                       </div>
-//                     )}
-//                   </>
-//                 )}
+//                 {activeTab === 'BrickWork' && <BrickWork />}
+//                 {activeTab === 'ElectricalWork' && <ElectricalWork />}
+//                 {activeTab === 'labour' && <LabourAttendance />}
+//                 {activeTab === 'labourAttendance' && <LabourAttendance2 />}
 
 //                 {/* Unknown / future module */}
 //                 {activeTab !== 'overview' &&
-//                  !['curing','casting','waterproofing','BrickWork','ElectricalWork','labour'].includes(activeTab) && (
+//                  !['curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'].includes(activeTab) && (
 //                   <div className="flex flex-col items-center justify-center py-20 text-gray-500">
 //                     <Hammer size={64} className="mb-6 opacity-70" />
 //                     <h3 className="text-2xl font-semibold text-gray-700 mb-2">
@@ -292,13 +250,16 @@
 
 
 
+//////
+
+
 import React, { useState, useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
 import {
   LayoutDashboard, Droplets, Hammer, ShieldCheck,
-  Pickaxe, Landmark, Lock, LogOut, Users, HardHat, Clock, DollarSign,
+  Pickaxe, Landmark, Lock, LogOut, Users, Clock,
 } from 'lucide-react';
 
 // Existing components
@@ -308,44 +269,41 @@ import Waterproofing from '../components/WaterProofing/waterproofing';
 import BrickWork from '../components/Brickswork/BrickWork';
 import ElectricalWork from '../components/Electrical/ElectricalWork';
 
-// Labour sub-components
+// Labour components
 import LabourAttendance from '../components/LabourForm/Attendance';
+import LabourAttendance2 from '../components/LabourAttendance/LabourAttendance';
 
-import { logout } from '../../src/features/Auth/AuthSlice'; // adjust path if needed
+import { logout } from '../../src/features/Auth/AuthSlice';
 
 const ROLE_PERMISSIONS = {
   ADMIN: [
-    'overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'LabourAttendance'
+    'overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'
   ],
-  AHUJA:       ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
-  ABBOTT:      ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
-  RANA:        ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
-  RNTU:        ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
-  SCOPE:       ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
-  NEWSCOPE:    ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
-  GUPTA_JI_C:  ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
-  GUPTA_JI_B:  ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
-  GUPTA_JI_D:  ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
-  SCOPE_ADJUSTING: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
-  UDIT_AGARWAL: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
-  MANISH_JAIN: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour'],
+  AHUJA: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+  ABBOTT: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+  RANA: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+  RNTU: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+  SCOPE: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+  NEWSCOPE: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+  GUPTA_JI_C: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+  GUPTA_JI_B: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+  GUPTA_JI_D: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+  SCOPE_ADJUSTING: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+  UDIT_AGARWAL: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
+  MANISH_JAIN: ['overview', 'curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'],
 };
 
 const DEFAULT_PERMISSIONS = ['overview'];
 
 const MODULE_CONFIG = [
-  { id: 'overview',       label: 'Overview',       icon: LayoutDashboard, color: 'blue'    },
-  { id: 'curing',         label: 'Curing',         icon: Droplets,        color: 'cyan'    },
-  { id: 'casting',        label: 'Casting',        icon: Hammer,          color: 'indigo'  },
-  { id: 'waterproofing',  label: 'Waterproofing',  icon: ShieldCheck,     color: 'teal'    },
-  { id: 'BrickWork',      label: 'Brick Work',     icon: Pickaxe,         color: 'amber'   },
-  { id: 'ElectricalWork', label: 'Electrical',     icon: Landmark,        color: 'violet'  },
-  { id: 'labour',         label: 'Labour',         icon: Users,           color: 'orange'  },
-];
-
-const LABOUR_SUB_MODULES = [
-  { id: 'LabourAttendance', label: 'Labour Attendance', icon: Clock, component: LabourAttendance },
-  // Add more sub-modules later if needed
+  { id: 'overview', label: 'Overview', icon: LayoutDashboard, color: 'blue' },
+  { id: 'curing', label: 'Curing', icon: Droplets, color: 'cyan' },
+  { id: 'casting', label: 'Casting', icon: Hammer, color: 'indigo' },
+  { id: 'waterproofing', label: 'Waterproofing', icon: ShieldCheck, color: 'teal' },
+  { id: 'BrickWork', label: 'Brick Work', icon: Pickaxe, color: 'amber' },
+  { id: 'ElectricalWork', label: 'Electrical', icon: Landmark, color: 'violet' },
+  { id: 'labour', label: 'Night Labour', icon: Users, color: 'orange' },  // ✅ Changed here
+  { id: 'labourAttendance', label: 'Labour Attendance', icon: Clock, color: 'green' },
 ];
 
 const Dashboard = () => {
@@ -354,7 +312,6 @@ const Dashboard = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const urlTab = searchParams.get('tab') || 'overview';
-  const urlSub = searchParams.get('sub') || null;
 
   // Normalize user type
   const normalizedUserType = (rawUserType || '').trim().toUpperCase().replace(/\s+/g, '');
@@ -382,27 +339,6 @@ const Dashboard = () => {
     setSearchParams({ tab: newTab }, { replace: true });
   };
 
-  // Labour sub-tab logic
-  const isLabourTab = activeTab === 'labour';
-
-  const [activeSub, setActiveSub] = useState(null);
-
-  useEffect(() => {
-    if (isLabourTab) {
-      const validSubs = LABOUR_SUB_MODULES.map(s => s.id);
-      const initialSub = urlSub && validSubs.includes(urlSub) ? urlSub : LABOUR_SUB_MODULES[0]?.id || null;
-      setActiveSub(initialSub);
-    } else {
-      setActiveSub(null);
-    }
-  }, [isLabourTab, urlSub]);
-
-  const handleSubChange = (newSub) => {
-    if (!LABOUR_SUB_MODULES.some(s => s.id === newSub)) return;
-    setActiveSub(newSub);
-    setSearchParams({ tab: 'labour', sub: newSub }, { replace: true });
-  };
-
   // Protect if permissions change
   useEffect(() => {
     if (!allowedModules.some(m => m.id === activeTab)) {
@@ -424,7 +360,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100">
-      {/* Navbar - wider container */}
+      {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-sm">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
           <div className="flex items-center justify-between h-16">
@@ -459,7 +395,7 @@ const Dashboard = () => {
         </div>
       </nav>
 
-      {/* Main Content - wider container */}
+      {/* Main Content */}
       <main className="pt-20 px-4 sm:px-6 lg:px-8 xl:px-10 max-w-screen-2xl mx-auto">
         {!hasAccess ? (
           <div className="flex flex-col items-center justify-center min-h-[70vh] text-center">
@@ -472,7 +408,7 @@ const Dashboard = () => {
           </div>
         ) : (
           <>
-            {/* Main Tabs - improved spacing */}
+            {/* Main Tabs */}
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-2.5 mb-6 sticky top-[4.5rem] z-40">
               <div className="flex overflow-x-auto gap-2.5 py-1.5 no-scrollbar snap-x snap-mandatory">
                 {allowedModules.map((module) => {
@@ -503,6 +439,7 @@ const Dashboard = () => {
             {/* Content Area */}
             <div className="bg-white rounded-2xl shadow-xl border border-gray-100 min-h-[70vh]">
               <div className="p-6 md:p-8 lg:p-10">
+                {/* Overview */}
                 {activeTab === 'overview' && (
                   <div className="space-y-8">
                     <h2 className="text-3xl font-bold text-gray-800">
@@ -528,30 +465,18 @@ const Dashboard = () => {
                   </div>
                 )}
 
-                {activeTab === 'curing'        && <Curing />}
-                {activeTab === 'casting'       && <Casting />}
+                {/* Individual Modules */}
+                {activeTab === 'curing' && <Curing />}
+                {activeTab === 'casting' && <Casting />}
                 {activeTab === 'waterproofing' && <Waterproofing />}
-                {activeTab === 'BrickWork'     && <BrickWork />}
-                {activeTab === 'ElectricalWork'&& <ElectricalWork />}
-
-                {/* Labour Content */}
-                {isLabourTab && (
-                  <>
-                    {activeSub === 'LabourAttendance' && <LabourAttendance />}
-                    
-                    {!activeSub && LABOUR_SUB_MODULES.length > 0 && (
-                      <div className="flex flex-col items-center justify-center py-20 text-gray-500">
-                        <Users size={64} className="mb-6 opacity-70" />
-                        <h3 className="text-2xl font-semibold text-gray-700 mb-2">Select a Labour Module</h3>
-                        <p>Choose from Attendance, Advances, or Payments</p>
-                      </div>
-                    )}
-                  </>
-                )}
+                {activeTab === 'BrickWork' && <BrickWork />}
+                {activeTab === 'ElectricalWork' && <ElectricalWork />}
+                {activeTab === 'labour' && <LabourAttendance />}
+                {activeTab === 'labourAttendance' && <LabourAttendance2 />}
 
                 {/* Unknown / future module */}
                 {activeTab !== 'overview' &&
-                 !['curing','casting','waterproofing','BrickWork','ElectricalWork','labour'].includes(activeTab) && (
+                 !['curing', 'casting', 'waterproofing', 'BrickWork', 'ElectricalWork', 'labour', 'labourAttendance'].includes(activeTab) && (
                   <div className="flex flex-col items-center justify-center py-20 text-gray-500">
                     <Hammer size={64} className="mb-6 opacity-70" />
                     <h3 className="text-2xl font-semibold text-gray-700 mb-2">

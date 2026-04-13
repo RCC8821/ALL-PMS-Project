@@ -30,6 +30,8 @@ const waterProffingSheetID=process.env.WATER_ID;
 const BrickWorkSheetID=process.env.BRICKWORK_ID;
 const Electrical_ID = process.env.Electrical_SHEET_ID
 const LABOUR_ID= process.env.LABOUR_SHEET_ID
-module.exports = { sheets, drive, spreadsheetId ,castingSheetID,waterProffingSheetID,BrickWorkSheetID,Electrical_ID,LABOUR_ID};
+const LABOUR_ID_New= process.env.LABOUR_SHEET_ID_1
+const SHARED_DRIVE_ID = process.env.LABOUR_DRIVE_FOLDER_ID;
+module.exports = { sheets, drive, spreadsheetId ,castingSheetID,waterProffingSheetID,BrickWorkSheetID,Electrical_ID,LABOUR_ID,SHARED_DRIVE_ID,LABOUR_ID_New};
 
 
